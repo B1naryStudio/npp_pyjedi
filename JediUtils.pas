@@ -50,6 +50,8 @@ type
 function JediMakeScript(const source, source_path: string;
   Aline: integer = -1; Acolumn: Integer = -1): Variant;
 
+function JediAvailable: Boolean;
+
 function JediGetAutocompleteList(script: Variant): TArray<TJediDefinition>;
 function JediGetDefinitionsList(script: Variant; tryLiter: boolean = true): TArray<TJediDefinition>;
 function JediGetUsagesList(script: Variant): TArray<TJediDefinition>;
@@ -65,6 +67,15 @@ begin
   if __jedi = Unassigned then
     __jedi := Import('jedi');
   Result := __jedi;
+end;
+
+function JediAvailable: Boolean;
+begin
+  try
+    Result := Jedi <> Unassigned;
+  except
+    Result := false;
+  end;
 end;
 
 function JediMakeScript(const source, source_path: string;

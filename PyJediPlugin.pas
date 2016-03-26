@@ -26,7 +26,6 @@ uses
 
 type
   TUsesParams = record
-    AutoListSeparator: byte;
     AutoSortOrder: TSciAutoListSortOrder;
     DropRestOfWord: Boolean;
   end;
@@ -40,7 +39,7 @@ type
     FUsagesDocIndex: Integer;
     FUsagesView: TNppView;
     const
-      cAutoListSeparator: byte = 10;
+      cAutoListSeparator: byte = Ord(' ');
       cSettingsFile = 'PyJedi\pyjedy.settings';
     procedure RegisterAutocompleteImages;
     procedure InitNPP;
@@ -221,14 +220,11 @@ begin
     begin
       for j := 0 to Length(calls[i].params) - 1 do
         if not FilterParam(calls[i].params[j]) then
-          if j = 0 then
-            sb.Append(calls[i].params[j])
-          else
-            sb.Append(', ' + calls[i].params[j]);
+          sb.Append(calls[i].params[j] + ', ');
       if Length(calls) > 1 then
         sb.Append(Chr(i + 1));
     end;
-    Result := sb.ToString();
+    Result := sb.ToString(0, sb.Length - 2);
   finally
     sb.Free;
   end;
@@ -323,7 +319,7 @@ begin
     FActive := false;
     LoadOldParams;
   end;
-  if (NppBaseFuncs.getCurrentLangType = L_PYTHON) and not FActive then
+  if (NppBaseFuncs.getCurrentLangType = L_PYTHON) and not FActive and JediAvailable then
   begin
     FActive := true;
     InitNPP;
@@ -375,7 +371,6 @@ procedure TPyJediPlugin.SetInfo(NppData: TNppData);
 begin
   inherited;
   PJOptions.LoadFromFile(GetPluginsConfigDir + cSettingsFile);
-  FUsesParams.AutoListSeparator := ScintillaFuncs.autoGetListSeparator;
   FUsesParams.AutoSortOrder := ScintillaFuncs.autoGetSortOrder;
   FUsesParams.DropRestOfWord := ScintillaFuncs.autoGetDropRestOfWord;
   FActive := NppBaseFuncs.getCurrentLangType = L_PYTHON;
@@ -416,7 +411,6 @@ procedure TPyJediPlugin.LoadOldParams;
 begin
   with FUsesParams do
   begin
-    ScintillaFuncs.autoSetListSeparator(AutoListSeparator);
     ScintillaFuncs.autoSetSortOrder(AutoSortOrder);
     ScintillaFuncs.autoSetDropRestOfWord(DropRestOfWord);
   end;
