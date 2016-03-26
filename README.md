@@ -6,5 +6,5 @@ Implemented features: auto-complete, go to definition, search usages, show funct
 
 Written in Delphi XE2. Compilation required "superobject" (https://code.google.com/p/superobject/) and "Python for Delphi" (https://github.com/pyscripter/python4delphi) libraries.
 
-Using it requires Python with installed Jedi (e.g. pip install jedi).
+Using it requires Python (x64 installation will not work) with installed Jedi (e.g. pip install jedi).
 To install put release\pyjedi.dll to Npp plugins folder.
