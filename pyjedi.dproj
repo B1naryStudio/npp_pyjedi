@@ -3,7 +3,7 @@
 			<ProjectGuid>{0B240D95-9377-4AFB-BAAE-5853FB17A99F}</ProjectGuid>
 			<MainSource>pyjedi.dpr</MainSource>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Config Condition="'$(Config)'==''">Release</Config>
 			<TargetedPlatforms>1</TargetedPlatforms>
 			<AppType>Library</AppType>
 			<FrameworkType>VCL</FrameworkType>
